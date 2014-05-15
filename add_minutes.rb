@@ -7,9 +7,9 @@
 #
 # Returns a string representing the altered time.
 def add_minutes(time, increment)
-  # parse time into array of hour, minutes and time of day
+  # parse time into array of hour, minutes and period
   begin
-    hour, min, tod = time.split(/[\s:]/)
+    hour, min, period = time.split(/[\s:]/)
   rescue
     raise "Incorrect format for time: #{time}.  Must be a string formatted as: [H]H:MM {AM|PM}"
   end
@@ -28,12 +28,24 @@ def add_minutes(time, increment)
 
   # increment hour if minutes + increment > 60
   if integer?(hour)
-    hour = hour.to_i + total_minutes / 60
+    new_hour = hour.to_i + total_minutes / 60
+    twelfth_hour = new_hour % 12
   else
     raise "Hour must be an integer."
   end
+  
+  #deal with am/pm
+  if new_hour > 12
+    if period == 'AM'
+      period = 'PM'
+    elsif period == 'PM'
+      period = 'AM'
+    else
+      raise "Period {#period} must be AM or PM"
+    end
+  end
 
-  "#{hour}:#{minutes} #{tod}"
+  "#{twelfth_hour}:#{minutes} #{tod}"
 end
 
 # Give credit where credit is due:
@@ -63,6 +75,6 @@ end
 # We can even turn back the clock!
 # puts add_minutes('9:10 AM', -30)
 
-# Additional concerns: what if hour or minutes provided are some object with no "to_s" method?
-# AM/PM was not addressed
-# reset at 12 > 1 was not addressed
+# Additional concerns:
+# What if hour or minutes provided are some object with no "to_s" method?
+# AM/PM is naive.  If someone enters an increment in minutes > 12 hours and < 24 hours then it should not shift.
