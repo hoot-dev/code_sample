@@ -29,13 +29,13 @@ def add_minutes(time, increment)
   # increment hour if minutes + increment > 60
   if integer?(hour)
     new_hour = hour.to_i + total_minutes / 60
-    twelfth_hour = new_hour % 12
+    twelfth_hour = new_hour == 12 ? new_hour : new_hour % 12
   else
     raise "Hour must be an integer."
   end
-  
+
   #deal with am/pm
-  if new_hour > 12
+  if new_hour >= 12
     if period == 'AM'
       period = 'PM'
     elsif period == 'PM'
@@ -45,7 +45,7 @@ def add_minutes(time, increment)
     end
   end
 
-  "#{twelfth_hour}:#{minutes} #{tod}"
+  "#{twelfth_hour}:#{minutes} #{period}"
 end
 
 # Give credit where credit is due:
@@ -74,6 +74,9 @@ end
 
 # We can even turn back the clock!
 # puts add_minutes('9:10 AM', -30)
+
+# Check am/pm
+# puts add_minutes('11:59 AM', 10)
 
 # Additional concerns:
 # What if hour or minutes provided are some object with no "to_s" method?
