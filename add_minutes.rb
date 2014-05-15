@@ -64,3 +64,5 @@ end
 # puts add_minutes('9:10 AM', -30)
 
 # Additional concerns: what if hour or minutes provided are some object with no "to_s" method?
+# AM/PM was not addressed
+# reset at 12 > 1 was not addressed
