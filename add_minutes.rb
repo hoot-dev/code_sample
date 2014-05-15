@@ -36,6 +36,8 @@ def add_minutes(time, increment)
   "#{hour}:#{minutes} #{tod}"
 end
 
+# Give credit where credit is due:
+# http://stackoverflow.com/questions/1235863/test-if-a-string-is-basically-an-integer-in-quotes-using-ruby
 def integer?(num)
   !!(num.to_s =~ /^[-+]?[0-9]+$/)
 end
